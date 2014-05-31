@@ -1,4 +1,4 @@
-# SassyExport
+# SassyExport [![Gem Version](https://badge.fury.io/rb/SassyExport.svg)](http://badge.fury.io/rb/SassyExport)
 
 SassyExport is a lightweight plugin for [SassyJSON](https://github.com/HugoGiraudel/SassyJSON) that allows you to export an encoded Sass map into an external JSON file. Use it anyway you like.
 
