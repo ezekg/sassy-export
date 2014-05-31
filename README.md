@@ -17,8 +17,8 @@ Our file structure,
 root
 ├── sass
 │   ├── style.scss
-└── json
-config.rb
+├── json
+│ config.rb
 ```
 
 Sass,
