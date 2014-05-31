@@ -12,6 +12,15 @@ SassyExport is a lightweight plugin for [SassyJSON](https://github.com/HugoGirau
 
 #### Setup
 
+Our file structure,
+```
+root
+├── sass
+│   ├── style.scss
+└── json
+```
+
+Sass,
 ```scss
 // ./sass/style.scss
 
@@ -21,12 +30,12 @@ $map: (
 	hello: world,
 );
 
-@include json_export("../json", "hello", $map);
+@include SassyExport("/json", "hello", $map);
 ```
 
 #### Result
-New JSON file is created in `./json/hello.json`
 
+New JSON file is created in `./json/hello.json`. As you can see, `$path` is relative to where your `config.rb` is located. Simply calling `@include SassyExport("/", "hello", $map)` will write to your directory root.
 ```json
 {"hello": "world"}
 ```

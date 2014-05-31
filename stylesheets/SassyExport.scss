@@ -9,10 +9,10 @@
 // ----------------------------------------------------------------------------------------------------
 // @return creates placeholeder | write filename to path
 
-@mixin json_export($path, $filename, $map) {
+@mixin SassyExport($path, $filename, $map) {
     @at-root {
-        %json_export {
-            content: "#{SassyJSON_export(unquote($path), unquote($filename), unquote(json_encode($map)))}";
+        %SassyExport {
+            content: "#{SassyExport(unquote($path), unquote($filename), unquote(json_encode($map)))}";
         }
     }
 }

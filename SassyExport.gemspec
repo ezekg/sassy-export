@@ -23,11 +23,11 @@ Gem::Specification.new do |s|
   # Sass Files
   s.files += Dir.glob("stylesheets/**/*.*")
 
-  # Template Files
-  # s.files += Dir.glob("templates/**/*.*")
+  # Add to require
+  s.require_paths = ["lib", "stylesheets"]
 
   # Other files
-  s.files += ["LICENSE", "README.md"]
+  s.files += ["README.md"]
 
   # Gem Bookkeeping
   s.required_rubygems_version = ">= 1.3.6"
