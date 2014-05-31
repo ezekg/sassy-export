@@ -1,0 +1,18 @@
+@import "SassyJSON";
+
+// ----------------------------------------------------------------------------------------------------
+// SassyJSON : write passed json string to $path[/to/filename]
+// ----------------------------------------------------------------------------------------------------
+// @param $path [string] : directory path to write to
+// @param $filename [string] : filename to write at path
+// @param $map [map] : map to write to filename
+// ----------------------------------------------------------------------------------------------------
+// @return creates placeholeder | write filename to path
+
+@mixin json_export($path, $filename, $map) {
+    @at-root {
+        %json_export {
+            content: "#{SassyJSON_export(unquote($path), unquote($filename), unquote(json_encode($map)))}";
+        }
+    }
+}
