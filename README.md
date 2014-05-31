@@ -18,6 +18,7 @@ root
 ├── sass
 │   ├── style.scss
 └── json
+config.rb
 ```
 
 Sass,
@@ -35,12 +36,12 @@ $map: (
 
 #### Result
 
-New JSON file is created in `./json/hello.json`. As you can see, `$path` is relative to where your `config.rb` is located. Simply calling `@include SassyExport("/", "hello", $map)` will write to your directory root.
+New JSON file is created at `./json/hello.json`. As you can see, `$path` is relative to where your `config.rb` is located. Simply calling `@include SassyExport("/", "hello", $map)` will write to your directory root.
 ```json
 {"hello": "world"}
 ```
 
-====
+#### Breakdown
 
 The `json_export()` mixin takes a directory `$path`, `$filename`, and a Sass `$map` as arguments. It then converts the `$map` into a JSON map with SassyJSON's `json_encode()` function, then Ruby creates a new file (or updates an existing file), and writes the contents of the json string to it. I'm no Ruby expert, so if you belive that you could improve the small amount of code here, feel free to.
 

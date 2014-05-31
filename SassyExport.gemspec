@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
   s.homepage = "https://github.com/ezekg/SassyExport/"
 
   # Project Description
-  s.summary = %q{SassyExport is a lightweight plugin for SassyJSON that allows you to export an encoded Sass map into an external JSON file.}
-  s.description = %q{SassyExport allows you to export a Sass map into an external JSON file.}
+  s.summary = %q{SassyExport allows you to export a Sass map into an external JSON file.}
+  s.description = %q{SassyExport is a lightweight plugin for SassyJSON that allows you to export an encoded Sass map into an external JSON file.}
 
   # Library Files
   s.files += Dir.glob("lib/**/*.*")
