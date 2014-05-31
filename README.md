@@ -18,7 +18,7 @@ root
 ├── sass
 │   ├── style.scss
 ├── json
-│ config.rb
+└── config.rb
 ```
 
 Sass,
