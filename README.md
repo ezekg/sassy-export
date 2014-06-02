@@ -43,7 +43,7 @@ New JSON file is created at `./json/hello.json`. As you can see, `$path` is rela
 
 #### Breakdown
 
-The `json_export()` mixin takes a directory/filename.json `$path`, and a Sass `$map` as arguments. It then converts the `$map` into a JSON map with SassyJSON's `json_encode()` function, then Ruby creates a new file (or updates an existing file), and writes the contents of the json string to it. I'm no Ruby expert, so if you belive that you could improve the small amount of code here, feel free to.
+The `SassyExport()` mixin takes a directory/filename.json `$path`, and a Sass `$map` as arguments. It then converts the `$map` into a JSON map with SassyJSON's `json_encode()` function, then Ruby creates a new file (or updates an existing file), and writes the contents of the json string to it. I'm no Ruby expert, so if you belive that you could improve the small amount of code here, feel free to.
 
 Enjoy.
 
