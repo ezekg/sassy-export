@@ -1,18 +1,17 @@
 @import "SassyJSON";
 
 // ----------------------------------------------------------------------------------------------------
-// SassyJSON : write passed json string to $path[/to/filename]
+// SassyExport : write passed json string to $path/to/filename.json
 // ----------------------------------------------------------------------------------------------------
-// @param $path [string] : directory path to write to
-// @param $filename [string] : filename to write at path
+// @param $path [string] : directory path and filename to write
 // @param $map [map] : map to write to filename
 // ----------------------------------------------------------------------------------------------------
-// @return creates placeholeder | write filename to path
+// @return creates placeholder | write filename to path
 
-@mixin SassyExport($path, $filename, $map) {
+@mixin SassyExport($path, $map) {
     @at-root {
         %SassyExport {
-            content: "#{SassyExport(unquote($path), unquote($filename), unquote(json_encode($map)))}";
+            content: "#{SassyExport(unquote($path), unquote(json_encode($map)))}";
         }
     }
 }
