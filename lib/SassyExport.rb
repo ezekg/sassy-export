@@ -18,7 +18,6 @@ end
 # SassyExport : write passed json string to path/to/filename.json
 # ----------------------------------------------------------------------------------------------------
 # @param path [string] : directory path to write string
-# @param filename [string] : file name to write to path
 # @param string [string] : json to write to filename
 # ----------------------------------------------------------------------------------------------------
 # @return string | write filename to path
@@ -30,6 +29,6 @@ module Sass::Script::Functions
         # open file [create new file if file does not exist], write string to root/path/to/filename.json
         File.open("#{root}#{path}", "w") { |f| f.write(json) }
         # return string for use in css
-        return string
+        return json
     end
 end
