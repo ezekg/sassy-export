@@ -57,6 +57,6 @@ The `SassyExport()` mixin takes a directory/filename.json `$path`, and a Sass `$
 
 Enjoy.
 
-## SassyJSON
+## Also Check Out
 
-* [Download SassyJSON](https://github.com/HugoGiraudel/SassyJSON)
+* [SassyJSON](https://github.com/HugoGiraudel/SassyJSON)
