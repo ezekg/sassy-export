@@ -35,5 +35,7 @@ Gem::Specification.new do |s|
 
   # Gems Dependencies
   s.add_dependency("json", [">=1.8.1"])
+  s.add_dependency("sass", [">=3.3.0"])
+  s.add_dependency("compass", [">= 0.12.1"])
 
 end
