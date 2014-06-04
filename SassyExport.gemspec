@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   # Project Description
   s.summary = %q{SassyExport allows you to export a Sass map into an external JSON file.}
-  s.description = %q{SassyExport is a lightweight plugin for SassyJSON that allows you to export an encoded Sass map into an external JSON file.}
+  s.description = %q{SassyExport is a lightweight Compass extension that allows you to export an encoded Sass map into an external JSON file.}
 
   # Library Files
   s.files += Dir.glob("lib/**/*.*")
@@ -34,6 +34,6 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
 
   # Gems Dependencies
-  s.add_dependency("SassyJSON", [">=1.1.7"])
+  s.add_dependency("json", [">=1.8.1"])
 
 end

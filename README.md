@@ -1,6 +1,6 @@
 # SassyExport [![Gem Version](https://badge.fury.io/rb/SassyExport.svg)](http://badge.fury.io/rb/SassyExport)
 
-SassyExport is a lightweight plugin for [SassyJSON](https://github.com/HugoGiraudel/SassyJSON) that allows you to export an encoded Sass map into an external JSON file. Use it anyway you like.
+SassyExport is a lightweight Compass extension that allows you to export an encoded Sass map into an external JSON file. Use it anyway you like.
 
 ## Installation
 
@@ -31,14 +31,24 @@ $map: (
 	hello: world,
 );
 
-@include SassyExport("/json/hello.json", $map);
+// SassyExport : convert passed map to json and write to path/to/filename.json
+// ----------------------------------------------------------------------------------------------------
+// @param $path [string] : directory path and filename
+// @param $map [map] : map to convert to json
+// @param $pretty [bool] : pretty print json
+// ----------------------------------------------------------------------------------------------------
+// @return $string | write json to path
+
+@include SassyExport("/json/hello.json", $map, true);
 ```
 
 #### Result
 
 New JSON file is created at `./json/hello.json`. As you can see, `$path` is relative to where your `config.rb` is located. Simply calling `@include SassyExport("/hello.json", $map)` will write to your directory root.
 ```json
-{"hello": "world"}
+{
+	"hello": "world"
+}
 ```
 
 #### Breakdown
@@ -50,8 +60,3 @@ Enjoy.
 ## SassyJSON
 
 * [Download SassyJSON](https://github.com/HugoGiraudel/SassyJSON)
-
-## Credits
-
-* [Fabrice Weinberg](http://twitter.com/fweinb)
-* [Hugo Giraudel](http://twitter.com/hugogiraudel)
