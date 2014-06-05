@@ -7,8 +7,8 @@ Compass::Frameworks.register('SassyExport', :path => extension_path)
 # Version is a number. If a version contains alphas, it will be created as a prerelease version
 # Date is in the form of YYYY-MM-DD
 module SassyExport
-  VERSION = "1.1.0"
-  DATE = "2014-06-04"
+  VERSION = "1.1.1"
+  DATE = "2014-06-05"
 end
 
 # SassyExport : convert passed map to json and write to path/to/filename.json
@@ -27,22 +27,38 @@ module Sass::Script::Functions
             value
         end
 
+        # unquote strings
+        def u(s)
+            unquote(s)
+        end
+
         # recursive parse to array
         def recurs_to_a(array)
             if array.is_a?(Array) 
                 array.map do | l |
                     if l.is_a?(Sass::Script::Value::Map)
+                        # if map, recurse to hash
                         l = recurs_to_h(l)
                     elsif l.is_a?(Sass::Script::Value::List)
+                        # if list, recurse to array
                         l = recurs_to_a(l)
                     elsif l.is_a?(Sass::Script::Value::Bool)
+                        # convert to bool
                         l = l.to_bool
                     elsif l.is_a?(Sass::Script::Value::Number)
+                        # if it's a unitless number, convert to ruby val
                         if l.unitless?
-                            l = l.to_i
+                            l = l.value
+                        # else convert to string
                         else
-                            l = l.to_s
+                            l = u(l)
                         end
+                    elsif l.is_a?(Sass::Script::Value::Color)
+                        # get hex/rgba value for color
+                        l = l.inspect
+                    else
+                        # convert to string
+                        l = u(l)
                     end
                     l
                 end
@@ -56,19 +72,21 @@ module Sass::Script::Functions
             if hash.is_a?(Hash) 
                 hash.inject({}) do | h, (k, v) |
                     if v.is_a?(Sass::Script::Value::Map)
-                        h[k] = recurs_to_h(v)
+                        h[u(k)] = recurs_to_h(v)
                     elsif v.is_a?(Sass::Script::Value::List)
-                        h[k] = recurs_to_a(v)
+                        h[u(k)] = recurs_to_a(v)
                     elsif v.is_a?(Sass::Script::Value::Bool)
-                        h[k] = v.to_bool
+                        h[u(k)] = v.to_bool
                     elsif v.is_a?(Sass::Script::Value::Number)
                         if v.unitless?
-                            h[k] = v.to_i
+                            h[u(k)] = v.value
                         else
-                            h[k] = v.to_s
+                            h[u(k)] = u(v)
                         end
+                    elsif v.is_a?(Sass::Script::Value::Color)
+                        h[u(k)] = v.inspect
                     else
-                        h[k] = v.to_s
+                        h[u(k)] = u(v)
                     end
                     h
                 end
@@ -107,7 +125,7 @@ module Sass::Script::Functions
         # open file [create new file if file does not exist], write string to root/path/to/filename.json
         File.open("#{dir_path}", "w") { |f| f.write(json) }
 
-        # return a null val
+        # return succcess string
         return opts(Sass::Script::Value::String.new('JSON was successfully exported with love by SassyExport'))
     end
     declare :SassyExport, [:path, :map, :pretty]
