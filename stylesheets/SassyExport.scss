@@ -3,13 +3,20 @@
 // @param $path [string] : directory path and filename
 // @param $map [map] : map to convert to json
 // @param $pretty [bool] : pretty print json
+// @param $debug [bool] : print debug string with path
 // ----------------------------------------------------------------------------------------------------
 // @return $string | write json to path
 
-@mixin SassyExport($path, $map, $pretty: false) {
+@mixin SassyExport($path, $map, $pretty: false, $debug: false) {
     @at-root {
-        %SassyExport {
-            /* #{SassyExport($path, $map, $pretty)} */
+        @if $debug {
+            SassyExport {
+                content: "#{SassyExport($path, $map, $pretty, $debug)}";
+            }
+        } @else {
+            %SassyExport {
+                /* #{SassyExport($path, $map, $pretty, $debug)} */
+            }
         }
     }
 }

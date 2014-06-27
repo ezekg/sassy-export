@@ -7,8 +7,8 @@ Compass::Frameworks.register('SassyExport', :path => extension_path)
 # Version is a number. If a version contains alphas, it will be created as a prerelease version
 # Date is in the form of YYYY-MM-DD
 module SassyExport
-  VERSION = "1.1.1"
-  DATE = "2014-06-05"
+  VERSION = "1.2.0"
+  DATE = "2014-06-27"
 end
 
 # SassyExport : convert passed map to json and write to path/to/filename.json
@@ -16,11 +16,12 @@ end
 # @param path [string] : directory path and filename
 # @param map [map] : map to convert to json
 # @param pretty [bool] : pretty print json
+# @param debug [bool] : print debug string with path
 # ----------------------------------------------------------------------------------------------------
 # @return string | write json to path
 
 module Sass::Script::Functions
-    def SassyExport(path, map, pretty)
+    def SassyExport(path, map, pretty, debug)
 
         def opts(value)
             value.options = options
@@ -34,7 +35,7 @@ module Sass::Script::Functions
 
         # recursive parse to array
         def recurs_to_a(array)
-            if array.is_a?(Array) 
+            if array.is_a?(Array)
                 array.map do | l |
                     if l.is_a?(Sass::Script::Value::Map)
                         # if map, recurse to hash
@@ -69,7 +70,7 @@ module Sass::Script::Functions
 
         # recursive parse to hash
         def recurs_to_h(hash)
-            if hash.is_a?(Hash) 
+            if hash.is_a?(Hash)
                 hash.inject({}) do | h, (k, v) |
                     if v.is_a?(Sass::Script::Value::Map)
                         h[u(k)] = recurs_to_h(v)
@@ -99,9 +100,11 @@ module Sass::Script::Functions
         assert_type path, :String, :path
         assert_type map, :Map, :map
         assert_type pretty, :Bool, :pretty
+        assert_type debug, :Bool, :debug
 
         # parse to bool
         pretty = pretty.to_bool
+        debug = debug.to_bool
 
         # define root path up to current working directory
         root = Dir.pwd
@@ -125,8 +128,13 @@ module Sass::Script::Functions
         # open file [create new file if file does not exist], write string to root/path/to/filename.json
         File.open("#{dir_path}", "w") { |f| f.write(json) }
 
+        # print path string if debug
+        if debug
+            puts "JSON was successfully exported to #{dir_path}"
+        end
+
         # return succcess string
-        return opts(Sass::Script::Value::String.new('JSON was successfully exported with love by SassyExport'))
+        return opts(Sass::Script::Value::String.new("JSON was successfully exported to #{dir_path}"))
     end
-    declare :SassyExport, [:path, :map, :pretty]
+    declare :SassyExport, [:path, :map, :pretty, :debug]
 end

@@ -1,2 +1,5 @@
 # Gem file
 *.gem
+
+# Folders
+test
