@@ -145,12 +145,15 @@ module Sass::Script::Functions
         # if we're turning it straight to js put a variable name in front
         ext == '.js' ? json = "var " + filename + " = " + json : json = json
 
-        # define flag
+        # define flags
         flag = 'w'
         flag = 'wb' if Sass::Util.windows? && options[:unix_newlines]
 
         # open file [create new file if file does not exist], write string to root/path/to/filename.json
-        File.open("#{dir_path}", flag) { |f| f.write(json) }
+        File.open("#{dir_path}", flag) do |file|
+            file.set_encoding(json.encoding) unless Sass::Util.ruby1_8?
+            file.print(json)
+        end
 
         # define message
         debug_msg = "#{ext == '.json' ? 'JSON' : 'JavaScript'} was successfully exported to #{dir_path}"
