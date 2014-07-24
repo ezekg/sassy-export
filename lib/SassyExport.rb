@@ -7,7 +7,7 @@ Compass::Frameworks.register('SassyExport', :path => extension_path)
 # Version is a number. If a version contains alphas, it will be created as a prerelease version
 # Date is in the form of YYYY-MM-DD
 module SassyExport
-  VERSION = "1.3.2"
+  VERSION = "1.3.3"
   DATE = "2014-07-24"
 end
 
@@ -37,24 +37,21 @@ module Sass::Script::Functions
         def recurs_to_a(array)
             if array.is_a?(Array)
                 array.map do | l |
-                    if l.is_a?(Sass::Script::Value::Map)
+                    case l
+                    when Sass::Script::Value::Map
                         # if map, recurse to hash
                         l = recurs_to_h(l)
-                    elsif l.is_a?(Sass::Script::Value::List)
+                    when Sass::Script::Value::List
                         # if list, recurse to array
                         l = recurs_to_a(l)
-                    elsif l.is_a?(Sass::Script::Value::Bool)
+                    when Sass::Script::Value::Bool
                         # convert to bool
                         l = l.to_bool
-                    elsif l.is_a?(Sass::Script::Value::Number)
+                    when Sass::Script::Value::Number
                         # if it's a unitless number, convert to ruby val
-                        if l.unitless?
-                            l = l.value
                         # else convert to string
-                        else
-                            l = u(l)
-                        end
-                    elsif l.is_a?(Sass::Script::Value::Color)
+                        l.unitless? ? l = l.value : l = u(l)
+                    when Sass::Script::Value::Color
                         # get hex/rgba value for color
                         l = l.inspect
                     else
@@ -72,21 +69,25 @@ module Sass::Script::Functions
         def recurs_to_h(hash)
             if hash.is_a?(Hash)
                 hash.inject({}) do | h, (k, v) |
-                    if v.is_a?(Sass::Script::Value::Map)
+                    case v
+                    when Sass::Script::Value::Map
+                        # if map, recurse to hash
                         h[u(k)] = recurs_to_h(v)
-                    elsif v.is_a?(Sass::Script::Value::List)
+                    when Sass::Script::Value::List
+                        # if list, recurse to array
                         h[u(k)] = recurs_to_a(v)
-                    elsif v.is_a?(Sass::Script::Value::Bool)
+                    when Sass::Script::Value::Bool
+                        # convert to bool
                         h[u(k)] = v.to_bool
-                    elsif v.is_a?(Sass::Script::Value::Number)
-                        if v.unitless?
-                            h[u(k)] = v.value
-                        else
-                            h[u(k)] = u(v)
-                        end
-                    elsif v.is_a?(Sass::Script::Value::Color)
+                    when Sass::Script::Value::Number
+                        # if it's a unitless number, convert to ruby val
+                        # else convert to string
+                        v.unitless? ? h[u(k)] = v.value : h[u(k)] = u(v)
+                    when Sass::Script::Value::Color
+                        # get hex/rgba value for color
                         h[u(k)] = v.inspect
                     else
+                        # convert to string
                         h[u(k)] = u(v)
                     end
                     h
@@ -143,7 +144,7 @@ module Sass::Script::Functions
         pretty ? json = JSON.pretty_generate(hash) : json = JSON.generate(hash)
 
         # if we're turning it straight to js put a variable name in front
-        ext == '.js' ? json = "var " + filename + " = " + json : json = json
+        json = "var " + filename + " = " + json if ext == '.js'
 
         # define flags
         flag = 'w'
