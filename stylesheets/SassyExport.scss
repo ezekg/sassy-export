@@ -1,12 +1,18 @@
-// SassyExport : convert passed map to json and write to path/to/filename.json
+// SassyExport : convert passed map to json and write to <path>/<filename>.<ext>
 // ----------------------------------------------------------------------------------------------------
 // @param $path [string] : directory path and filename, valid extensions: [json | js]
 // @param $map [map] : map to convert to json
 // @param $pretty [bool] : pretty print json
 // @param $debug [bool] : print debug string with path
 // ----------------------------------------------------------------------------------------------------
-// @return $string | write json to path
+// @return $string | write to path
 
 @mixin SassyExport($path, $map, $pretty: false, $debug: false) {
-    @at-root { @if $debug { /* #{SassyExport($path, $map, $pretty, $debug)} */ } }
+    @at-root {
+        @if $debug {
+            /* #{SassyExport($path, $map, $pretty, $debug)} */
+        } @else {
+            %SassExport { /* #{SassyExport($path, $map, $pretty, $debug)} */ }
+        }
+    }
 }
