@@ -7,7 +7,7 @@ Compass::Frameworks.register('SassyExport', :path => extension_path)
 # Version is a number. If a version contains alphas, it will be created as a prerelease version
 # Date is in the form of YYYY-MM-DD
 module SassyExport
-  VERSION = "1.3.0"
+  VERSION = "1.3.1"
   DATE = "2014-07-24"
 end
 
