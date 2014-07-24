@@ -33,7 +33,7 @@ $map: (
 
 // SassyExport : convert passed map to json and write to path/to/filename.json
 // ----------------------------------------------------------------------------------------------------
-// @param $path [string] : directory path and filename
+// @param $path [string] : directory path and filename, valid extensions: [json | js]
 // @param $map [map] : map to convert to json
 // @param $pretty [bool] : pretty print json
 // @param $debug [bool] : print debug string with path
@@ -54,9 +54,11 @@ New JSON file is created at `./json/hello.json`. As you can see, `$path` is rela
 
 #### Breakdown
 
-The `SassyExport()` mixin takes a directory/filename.json `$path`, and a Sass `$map` as arguments. There is also an optional argument `$pretty` which defaults to `false`, but will print pretty JSON (nicely indented) if set to `true`.
+The `SassyExport()` mixin takes a <directory>/<filename>.<ext> `$path` and a Sass `$map` as arguments. You can export straight to a Javascript object by using the extension `.js` instead of `.json`.
+There are also optional arguments: `$pretty` which defaults to `false`, but will print pretty JSON (nicely indented) if set to `true`; and `$debug` which will print debug information if set to `true`.
 
-It converts the `$map` into a JSON map through Ruby, and then creates a new file (or updates an existing file), and writes the contents of the JSON string to it. I'm no Ruby expert, so if you belive that you could improve the small amount of code here, feel free to.
+It converts the `$map` into either a JSON map or Javascript object through Ruby, then creates a new directory/file (or updates an existing directory/file), and writes the contents of the JSON string to it.
+Contributions are welcome. If you believe that you could improve the small amount of code here, feel free to.
 
 Enjoy.
 

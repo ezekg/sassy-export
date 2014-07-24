@@ -7,8 +7,8 @@ Compass::Frameworks.register('SassyExport', :path => extension_path)
 # Version is a number. If a version contains alphas, it will be created as a prerelease version
 # Date is in the form of YYYY-MM-DD
 module SassyExport
-  VERSION = "1.2.0"
-  DATE = "2014-06-27"
+  VERSION = "1.3.0"
+  DATE = "2014-07-24"
 end
 
 # SassyExport : convert passed map to json and write to path/to/filename.json
@@ -106,15 +106,32 @@ module Sass::Script::Functions
         pretty = pretty.to_bool
         debug = debug.to_bool
 
+        # parse to string
+        path = unquote(path).to_s
+
         # define root path up to current working directory
         root = Dir.pwd
 
         # define dir path
         dir_path = root
-        dir_path += unquote(path).to_s
+        dir_path += path
+
+        # get filename
+        filename = File.basename(dir_path, ".*")
+
+        # get extension
+        ext = File.extname(path)
 
         # normalize windows path
         dir_path = Sass::Util.pathname(dir_path)
+
+        # check if directory exists, if not make directory
+        dir = File.dirname(dir_path)
+
+        unless File.exists?(dir)
+            FileUtils.mkdir_p(dir)
+            puts "Directory was not found. Created new directory: #{dir}"
+        end
 
         # get map values
         map = opts(Sass::Script::Value::Map.new(map.value))
@@ -125,16 +142,24 @@ module Sass::Script::Functions
         # convert hash to pretty json if pretty
         pretty ? json = JSON.pretty_generate(hash) : json = JSON.generate(hash)
 
+        # if we're turning it straight to js put a variable name in front
+        ext == '.js' ? json = "var " + filename + " = " + json : json = json
+
+        # define flag
+        flag = 'w'
+        flag = 'wb' if Sass::Util.windows? && options[:unix_newlines]
+
         # open file [create new file if file does not exist], write string to root/path/to/filename.json
-        File.open("#{dir_path}", "w") { |f| f.write(json) }
+        File.open("#{dir_path}", flag) { |f| f.write(json) }
+
+        # define message
+        debug_msg = "#{ext == '.json' ? 'JSON' : 'JavaScript'} was successfully exported to #{dir_path}"
 
         # print path string if debug
-        if debug
-            puts "JSON was successfully exported to #{dir_path}"
-        end
+        puts debug_msg if debug
 
         # return succcess string
-        return opts(Sass::Script::Value::String.new("JSON was successfully exported to #{dir_path}"))
+        opts(Sass::Script::Value::String.new(debug_msg))
     end
     declare :SassyExport, [:path, :map, :pretty, :debug]
 end
