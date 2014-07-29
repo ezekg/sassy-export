@@ -10,9 +10,9 @@
 @mixin SassyExport($path, $map, $pretty: false, $debug: false) {
     @at-root {
         @if $debug {
-            /* #{SassyExport($path, $map, $pretty, $debug)} */
+            /*! #{SassyExport($path, $map, $pretty, $debug)} */
         } @else {
-            %SassExport { /* #{SassyExport($path, $map, $pretty, $debug)} */ }
+            %SassExport { /*! #{SassyExport($path, $map, $pretty, $debug)} */ }
         }
     }
 }
