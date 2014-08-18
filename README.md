@@ -1,6 +1,6 @@
 # SassyExport [![Gem Version](https://badge.fury.io/rb/SassyExport.svg)](http://badge.fury.io/rb/SassyExport)
 
-SassyExport is a lightweight Compass extension that allows you to export an encoded Sass map into an external JSON file. Use it anyway you like.
+SassyExport is a lightweight Sass extension that allows you to export an encoded Sass map into an external JSON file. Use it anyway you like.
 
 ## Installation
 

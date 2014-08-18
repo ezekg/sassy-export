@@ -1,14 +1,18 @@
-require "compass"
+require 'sass'
 require "json"
 
-extension_path = File.expand_path(File.join(File.dirname(__FILE__), ".."))
-Compass::Frameworks.register('SassyExport', :path => extension_path)
+base_directory = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+sassyexport_stylesheets_path = File.join(base_directory, 'stylesheets')
 
-# Version is a number. If a version contains alphas, it will be created as a prerelease version
-# Date is in the form of YYYY-MM-DD
+if (defined? Compass)
+    Compass::Frameworks.register('SassyExport', :path => base_directory)
+else
+    ENV["SASS_PATH"] = [ENV["SASS_PATH"], sassyexport_stylesheets_path].compact.join(File::PATH_SEPARATOR)
+end
+
 module SassyExport
-  VERSION = "1.3.4"
-  DATE = "2014-07-29"
+  VERSION = "1.3.5"
+  DATE = "2014-08-18"
 end
 
 # SassyExport : convert passed map to json and write to path/to/filename.json

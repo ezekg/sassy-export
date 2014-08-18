@@ -1,5 +1,5 @@
 {
     "name": "SassyExport",
-    "description": "SassyExport is a lightweight Compass extension that allows you to export an encoded Sass map into an external JSON file.",
+    "description": "SassyExport is a lightweight Sass extension that allows you to export an encoded Sass map into an external JSON file.",
     "tags": ["json", "sass", "ruby", "export"]
 }
