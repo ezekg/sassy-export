@@ -21,11 +21,12 @@ end
 # @param map [map] : map to convert to json
 # @param pretty [bool] : pretty print json
 # @param debug [bool] : print debug string with path
+# @param use_env [bool] : use ENV['PWD'] for current directory instead of Dir.pwd
 # ----------------------------------------------------------------------------------------------------
 # @return string | write json to path
 
 module Sass::Script::Functions
-    def SassyExport(path, map, pretty, debug)
+    def SassyExport(path, map, pretty, debug, use_env)
 
         def opts(value)
             value.options = options
@@ -106,17 +107,19 @@ module Sass::Script::Functions
         assert_type map, :Map, :map
         assert_type pretty, :Bool, :pretty
         assert_type debug, :Bool, :debug
+        assert_type use_env, :Bool, :use_env
 
         # parse to bool
         pretty = pretty.to_bool
         debug = debug.to_bool
+        use_env = use_env.to_bool
 
         # parse to string
         path = unquote(path).to_s
 
         # define root path up to current working directory
-        root = Dir.pwd
-
+        root = use_env ? ENV['PWD'] : Dir.pwd
+        
         # define dir path
         dir_path = root
         dir_path += path
@@ -169,5 +172,5 @@ module Sass::Script::Functions
         # return succcess string
         opts(Sass::Script::Value::String.new(debug_msg))
     end
-    declare :SassyExport, [:path, :map, :pretty, :debug]
+    declare :SassyExport, [:path, :map, :pretty, :debug, :use_env]
 end

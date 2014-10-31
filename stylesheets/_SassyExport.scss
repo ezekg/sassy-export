@@ -4,15 +4,16 @@
 // @param $map [map] : map to convert to json
 // @param $pretty [bool] : pretty print json
 // @param $debug [bool] : print debug string with path
+// @param use_env [bool] : use ENV['PWD'] for current directory instead of Dir.pwd
 // ----------------------------------------------------------------------------------------------------
 // @return $string | write to path
 
-@mixin SassyExport($path, $map, $pretty: false, $debug: false) {
+@mixin SassyExport($path, $map, $pretty: false, $debug: false, $use_env: false) {
     @at-root {
         @if $debug {
-            /*! #{SassyExport($path, $map, $pretty, $debug)} */
+            /*! #{SassyExport($path, $map, $pretty, $debug, $use_env)} */
         } @else {
-            %SassExport { /*! #{SassyExport($path, $map, $pretty, $debug)} */ }
+            %SassExport { /*! #{SassyExport($path, $map, $pretty, $debug, $use_env)} */ }
         }
     }
 }
