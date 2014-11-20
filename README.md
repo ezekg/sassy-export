@@ -23,7 +23,7 @@ root
 
 Sass,
 ```scss
-// ./sass/style.scss
+// sass/style.scss
 
 @import "SassyExport";
 
@@ -31,16 +31,18 @@ $map: (
 	hello: world,
 );
 
-// SassyExport : convert passed map to json and write to path/to/filename.json
-// ----------------------------------------------------------------------------------------------------
-// @param $path [string] : directory path and filename, valid extensions: [json | js]
-// @param $map [map] : map to convert to json
-// @param $pretty [bool] : pretty print json
-// @param $debug [bool] : print debug string with path
-// ----------------------------------------------------------------------------------------------------
-// @return $string | write json to path
-
-@include SassyExport("/json/hello.json", $map, true);
+///
+/// Convert passed map to json and write to <path>/<filename>.<ext>
+///
+/// @param {String} $path    - Directory path and filename
+/// @param {map}    $map     - Map to convert to json
+/// @param {Bool}   $pretty  - Pretty print json
+/// @param {Bool}   $debug   - Print debug string with path
+/// @param {Bool}   $use_env - Use ENV['PWD'] for current directory instead of Dir.pwd
+///
+/// @return {String} - Write file to path
+///
+@include SassyExport("/json/hello.json", $map);
 ```
 
 #### Result
