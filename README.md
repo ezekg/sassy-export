@@ -14,10 +14,10 @@ SassyExport is a lightweight Sass extension that allows you to export an encoded
 
 Our file structure,
 ```
-root/
-├── sass/
+root
+├── sass
 │   ├── style.scss
-├── json/
+├── json
 └── config.rb
 ```
 
@@ -54,7 +54,7 @@ New JSON file is created at `./json/hello.json`. As you can see, `$path` is rela
 
 #### Breakdown
 
-The `SassyExport()` mixin takes a `<directory>/<filename>.<ext>` `$path` and a Sass `$map` as arguments. You can export straight to a Javascript object by using the extension `.js` instead of `.json`.
+The `SassyExport()` mixin takes a `\<directory\>/\<filename\>.\<ext\>` `$path` and a Sass `$map` as arguments. You can export straight to a Javascript object by using the extension `.js` instead of `.json`.
 There are also optional arguments: `$pretty` which defaults to `false`, but will print pretty JSON (nicely indented) if set to `true`; and `$debug` which will print debug information if set to `true`.
 
 It converts the `$map` into either a JSON map or Javascript object through Ruby, then creates a new directory/file (or updates an existing directory/file), and writes the contents of the JSON string to it.
