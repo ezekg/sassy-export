@@ -14,7 +14,7 @@
         @if $debug {
             /*! #{SassyExport($path, $map, $pretty, $debug, $use_env)} */
         } @else {
-            %SassExport { /*! #{SassyExport($path, $map, $pretty, $debug, $use_env)} */ }
+            %SassyExport { /*! #{SassyExport($path, $map, $pretty, $debug, $use_env)} */ }
         }
     }
 }
