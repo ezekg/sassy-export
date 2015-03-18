@@ -1,37 +1,32 @@
-require 'sass'
+require "sass"
 require "json"
 
-base_directory = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-sassyexport_stylesheets_path = File.join(base_directory, 'stylesheets')
+base_directory = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+sassyexport_stylesheets_path = File.join(base_directory, "stylesheets")
 
 if (defined? Compass)
-    Compass::Frameworks.register('SassyExport', :path => base_directory)
+    Compass::Frameworks.register("SassyExport", :path => base_directory)
 else
     ENV["SASS_PATH"] = [ENV["SASS_PATH"], sassyexport_stylesheets_path].compact.join(File::PATH_SEPARATOR)
 end
 
 module SassyExport
-    VERSION = "1.4.0"
+    VERSION = "1.4.1"
 end
 
-###
-# Convert passed map to json and write to <path>/<filename>.<ext>
-#
-# @param {String} path
-#    Directory path and filename
-# @param {map}    map
-#    Map to convert to json
-# @param {Bool}   pretty
-#    Pretty print json
-# @param {Bool}   debug
-#    Print debug string with path
-# @param {Bool}   use_env
-#    Use ENV['PWD'] for current directory instead of Dir.pwd
-#
-# @return {String}
-#    Write file to path
-###
 module Sass::Script::Functions
+
+    #
+    # Convert passed map to json and write to <path>/<filename>.<ext>
+    #
+    # @param {String} path    - Directory path and filename
+    # @param {map}    map     - Map to convert to json
+    # @param {Bool}   pretty  - Pretty print json
+    # @param {Bool}   debug   - Print debug string with path
+    # @param {Bool}   use_env - Use ENV['PWD'] for current directory instead of Dir.pwd
+    #
+    # @return {String} - Write file to path
+    #
     def SassyExport(path, map, pretty, debug, use_env)
 
         def opts(value)
@@ -39,17 +34,33 @@ module Sass::Script::Functions
             value
         end
 
+        #
         # Unquote strings
-        def u(s)
-            unquote(s)
+        #
+        # @param {*} val
+        #
+        # @return Unquoted string, if String was passed. Else if will
+        #   just return the passed value.
+        #
+        def strip_quotes(value)
+            if value.is_a?(String) || value.is_a?(Sass::Script::Value::String)
+                unquote(value)
+            else
+                value
+            end
         end
 
-        ###
+        #
         # Recursive parse to array
-        ###
+        #
+        # @param {Array} array - Array containing SassScript values
+        #
+        # @return {Array} - Array containing parsed SassScript->Ruby values
+        #
         def recurs_to_a(array)
             if array.is_a?(Array)
-                array.map do | l |
+                array.map do |l|
+
                     case l
                     when Sass::Script::Value::Map
                         # If map, recurse to hash
@@ -62,14 +73,15 @@ module Sass::Script::Functions
                         l = l.to_bool
                     when Sass::Script::Value::Number
                         # If it's a unitless number, convert to ruby val, else convert to string
-                        l.unitless? ? l = l.value : l = u(l)
+                        l = l.unitless? ? l.value : strip_quotes(l)
                     when Sass::Script::Value::Color
                         # Get hex/rgba value for color
                         l = l.inspect
                     else
                         # Convert to string
-                        l = u(l)
+                        l = strip_quotes(l)
                     end
+
                     l
                 end
             else
@@ -77,32 +89,38 @@ module Sass::Script::Functions
             end
         end
 
-        ###
+        #
         # Recursive parse to hash
-        ###
+        #
+        # @param {Hash} hash - Hash containing SassScript values
+        #
+        # @return {Hash} - Hash containing parsed SassScript->Ruby values
+        #
         def recurs_to_h(hash)
             if hash.is_a?(Hash)
-                hash.inject({}) do | h, (k, v) |
+                hash.inject({}) do |h, (k, v)|
+
                     case v
                     when Sass::Script::Value::Map
                         # If map, recurse to hash
-                        h[u(k)] = recurs_to_h(v)
+                        h[strip_quotes(k)] = recurs_to_h(v)
                     when Sass::Script::Value::List
                         # If list, recurse to array
-                        h[u(k)] = recurs_to_a(v)
+                        h[strip_quotes(k)] = recurs_to_a(v)
                     when Sass::Script::Value::Bool
                         # Convert to bool
-                        h[u(k)] = v.to_bool
+                        h[strip_quotes(k)] = v.to_bool
                     when Sass::Script::Value::Number
                         # If it's a unitless number, convert to ruby val, else convert to string
-                        v.unitless? ? h[u(k)] = v.value : h[u(k)] = u(v)
+                        h[strip_quotes(k)] = v.unitless? ? v.value : strip_quotes(v)
                     when Sass::Script::Value::Color
                         # Get hex/rgba value for color
-                        h[u(k)] = v.inspect
+                        h[strip_quotes(k)] = v.inspect
                     else
                         # Convert to string
-                        h[u(k)] = u(v)
+                        h[strip_quotes(k)] = strip_quotes(v)
                     end
+
                     h
                 end
             else
@@ -126,7 +144,7 @@ module Sass::Script::Functions
         path = unquote(path).to_s
 
         # Define root path up to current working directory
-        root = use_env ? ENV['PWD'] : Dir.pwd
+        root = use_env ? ENV["PWD"] : Dir.pwd
 
         # Define dir path
         dir_path = root
@@ -162,8 +180,8 @@ module Sass::Script::Functions
         json = "var " + filename + " = " + json if ext == '.js'
 
         # Define flags
-        flag = 'w'
-        flag = 'wb' if Sass::Util.windows? && options[:unix_newlines]
+        flag = "w"
+        flag = "wb" if Sass::Util.windows? && options[:unix_newlines]
 
         # Ppen file (create new file if file does not exist), write string to root/path/to/filename.json
         File.open("#{dir_path}", flag) do |file|
@@ -172,7 +190,8 @@ module Sass::Script::Functions
         end
 
         # Define message
-        debug_msg = "#{ext == '.json' ? 'JSON' : 'JavaScript'} was successfully exported to #{dir_path}"
+        # debug_msg = "#{ext == '.json' ? 'JSON' : 'JavaScript'} was successfully exported to #{dir_path}"
+        debug_msg = "\e[0;32m   export\e[0m #{ext == '.json' ? 'JSON' : 'JavaScript'} to #{dir_path}"
 
         # Print path string if debug
         puts debug_msg if debug
