@@ -1,4 +1,7 @@
-require "./lib/sassy_export"
+lib = File.expand_path "../lib/", __FILE__
+$:.unshift lib unless $:.include? lib
+
+require "sassy-export"
 
 Gem::Specification.new do |s|
   s.version = SassyExport::VERSION

@@ -1,8 +1,7 @@
 require "sass"
 require "json"
-
-require_relative "sassy-export/version"
-require_relative "sassy-export/exporter"
+require "sassy-export/version"
+require "sassy-export/exporter"
 
 base_directory = File.expand_path File.join(File.dirname(__FILE__), "..")
 sassy_export_stylesheets_path = File.join base_directory, "stylesheets"
